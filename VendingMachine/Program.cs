@@ -4,10 +4,11 @@
     {
         private static bool isOrderingComplete = false;
         private static int currentCredit = 0;
+        private static IProductManager productManager = new ProductsManager();
+        private static List<Product> productsList = new List<Product>();
         static void Main(string[] args)
         {
-            IProductManager productManager = new ProductsManager();
-            List<Product> products = productManager.GetProductsList();
+            productsList = productManager.GetProductsList();
             Console.WriteLine("1.List Of Products." + "\n" +
                               "2.Insert Money" + "\n" +
                               "3.Recall Money" + "\n" +
@@ -17,7 +18,7 @@
             switch (value)
             {
                 case "1":
-                    products.ForEach(i => Console.Write($"{i.Name}-{i.Price} \n"));
+                    productsList.ForEach(i => Console.Write($"{i.Name}-{i.Price} \n"));
                     break;
                 default:
                     Console.WriteLine("Invalid Input");
@@ -34,8 +35,6 @@
 
         public static void OrderingProcess(string value)
         {
-            IProductManager productManager = new ProductsManager();
-            List<Product> products = productManager.GetProductsList();
             switch (value)
             {
                 case "2":
@@ -50,7 +49,7 @@
                 case "4":
                     Console.WriteLine("Order Product");
                     string productName = Console.ReadLine();
-                    Product product = products.FirstOrDefault(p => p.Name == productName);
+                    Product product = productsList.FirstOrDefault(p => p.Name.ToLower() == productName.ToLower());
                     if (product == null)
                     {
                         Console.WriteLine("Select Valid Product");
